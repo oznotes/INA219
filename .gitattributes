@@ -1,2 +1,15 @@
 # Auto detect text files and perform LF normalization
 * text=auto
+
+# ignore all ZIP files
+*.zip
+/zips/
+
+# ignore build folder
+/build/
+/out/
+
+
+#Clion
+.idea/*.*
+
