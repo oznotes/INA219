@@ -49,7 +49,8 @@ int main() {
         sleep_ms(1000);
     }
 }
-
+```
 ## Contributing
 
-If you find a bug or have an idea for a new feature, please create an issue in the GitHub repository. We welcome pull requests for bug fixes and new features.
+If you find a bug or have an idea for a new feature, please create an issue in the GitHub repository. 
+We welcome pull requests for bug fixes and new features.
