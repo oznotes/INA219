@@ -28,9 +28,10 @@ Follow the wiring diagram above to connect the INA219 sensor to the Raspberry Pi
 #include "INA219_driver/INA219.h"
 
 int main() {
-    INA219 ina219;
-    // i2c0, SDA pin 8, SCL pin 9, 400 kHz speed
-    ina219.I2C_START(i2c0, 8, 9, 400);
+    //i2c bus, i2c address
+    INA219 ina219(i2c0, 0x40);
+    //SDA pin 8, SCL pin 9, 400 kHz speed
+    ina219.I2C_START(8, 9, 400);
     // Calibrate for 0.1 Ohm shunt resistor and 3.2A max expected current
     ina219.calibrate(0.1, 3.2);
 

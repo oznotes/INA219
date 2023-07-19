@@ -3,6 +3,7 @@
 #include "hardware/i2c.h"
 #include "math.h"
 
+#define INA219_I2C_BUS i2c0
 #define INA219_I2C_ADDR 0x40
 #define INA219_REG_CONFIG 0x00
 #define INA219_REG_SHUNTVOLTAGE 0x01
@@ -15,7 +16,7 @@ float global_current_LSB;
 
 
 void i2c_init() {
-    i2c_init(i2c0, 100 * 1000);
+    i2c_init(INA219_I2C_BUS, 100 * 1000);
     gpio_set_function(8, GPIO_FUNC_I2C);
     gpio_set_function(9, GPIO_FUNC_I2C);
     gpio_pull_up(8);
@@ -24,8 +25,8 @@ void i2c_init() {
 
 uint16_t read_register(uint8_t reg) {
     uint8_t buf[2];
-    i2c_write_blocking(i2c0, INA219_I2C_ADDR, &reg, 1, true);
-    i2c_read_blocking(i2c0, INA219_I2C_ADDR, buf, 2, false);
+    i2c_write_blocking(INA219_I2C_BUS, INA219_I2C_ADDR, &reg, 1, true);
+    i2c_read_blocking(INA219_I2C_BUS, INA219_I2C_ADDR, buf, 2, false);
 
     return (buf[0] << 8) | buf[1];
 }
@@ -36,7 +37,7 @@ void write_register(uint8_t reg, uint16_t value) {
     buf[1] = (value >> 8) & 0xFF;
     buf[2] = value & 0xFF;
 
-    i2c_write_blocking(i2c0, INA219_I2C_ADDR, buf, 3, false);
+    i2c_write_blocking(INA219_I2C_BUS, INA219_I2C_ADDR, buf, 3, false);
 }
 
 void ina219_init() {

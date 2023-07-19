@@ -4,9 +4,10 @@
 #include "INA219_driver/INA219.h"
 
 void core1_entry() {
-    INA219 ina219;
-    // i2c0, SDA pin 8, SCL pin 9, 100 kHz speed
-    ina219.I2C_START(i2c0, 8, 9, 400);
+    // i2c bus, i2c address for sensor
+    INA219 ina219(i2c0, 0x40);
+    //SDA pin 8, SCL pin 9, 400 kHz speed
+    ina219.I2C_START(8, 9, 400);
     // Calibrate for 0.1 Ohm shunt resistor and 3.2A max expected current
     ina219.calibrate(0.1, 3.2);
 

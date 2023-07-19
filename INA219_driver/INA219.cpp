@@ -1,9 +1,9 @@
 #include "INA219.h"
 
-INA219::INA219(uint8_t i2c_addr) : _i2c_addr(i2c_addr), _current_LSB(0.0) {}
+INA219::INA219(i2c_inst_t *i2c_instance, uint8_t i2c_addr) : _i2c_instance(i2c_instance), _i2c_addr(i2c_addr), _current_LSB(0.0) {}
 
-void INA219::I2C_START(i2c_inst_t *i2c_instance, uint32_t sda_pin, uint32_t scl_pin, uint32_t speed_khz) {
-    i2c_init(i2c_instance, speed_khz * 1000);
+void INA219::I2C_START(uint32_t sda_pin, uint32_t scl_pin, uint32_t speed_khz) {
+    i2c_init(_i2c_instance, speed_khz * 1000);
     gpio_set_function(sda_pin, GPIO_FUNC_I2C);
     gpio_set_function(scl_pin, GPIO_FUNC_I2C);
     gpio_pull_up(sda_pin);
@@ -12,8 +12,8 @@ void INA219::I2C_START(i2c_inst_t *i2c_instance, uint32_t sda_pin, uint32_t scl_
 
 uint16_t INA219::read_register(uint8_t reg) {
     uint8_t buf[2];
-    i2c_write_blocking(i2c0, _i2c_addr, &reg, 1, true);
-    i2c_read_blocking(i2c0, _i2c_addr, buf, 2, false);
+    i2c_write_blocking(_i2c_instance, _i2c_addr, &reg, 1, true);
+    i2c_read_blocking(_i2c_instance, _i2c_addr, buf, 2, false);
 
     return (buf[0] << 8) | buf[1];
 }
@@ -23,7 +23,7 @@ void INA219::write_register(uint8_t reg, uint16_t value) {
     buf[0] = reg;
     buf[1] = (value >> 8) & 0xFF;
     buf[2] = value & 0xFF;
-    i2c_write_blocking(i2c0, _i2c_addr, buf, 3, false);
+    i2c_write_blocking(_i2c_instance, _i2c_addr, buf, 3, false);
 }
 
 void INA219::init() {
