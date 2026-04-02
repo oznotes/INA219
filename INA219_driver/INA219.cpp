@@ -55,7 +55,7 @@ float INA219::read_current() {
 
 float INA219::read_power() {
     uint16_t value = read_register(INA219_REG_POWER);
-    return value * 0.02;
+    return value * 20.0 * _current_LSB;
 }
 //
 // Created by elect on 3/17/2023.
